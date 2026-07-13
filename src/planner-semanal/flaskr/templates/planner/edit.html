@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset = "UTF-8">
+        <title>Planner semanal - edição de tarefa</title>
+    </head>
+    <body>
+        <form action="{{ url_for('planner.edit', index=index)}}" method="post">
+            <input type="text" name="afazer" value="{{ afazer['tarefa']}}">
+            <button type="submit">Salvar</button>
+        </form>
+    </body>
+</html>
