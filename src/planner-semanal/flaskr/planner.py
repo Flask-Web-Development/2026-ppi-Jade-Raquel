@@ -8,33 +8,61 @@ from flaskr.db import get_db
 
 bp = Blueprint('planner', __name__)
 
-afazeres = [{"tarefa":"exemplo", "finalizado": False}]
+
 @bp.route('/')
+@login_required
 def index():
-    
-    return render_template('planner/index.html', afazeres = afazeres)
+    db = get_db()
+    afazeres = db.execute("""SELECT * FROM task WHERE author_id = ?""",(g.user["id"],)).fetchall()
+    return render_template(
+    "planner/index.html",
+    afazeres=afazeres
+)
 
 @bp.route("/add", methods=["POST"])
+@login_required
 def add():
-    afazer = request.form['afazer']
-    afazeres.append({"tarefa": afazer, "finalizado": False})
-    return redirect(url_for("index"))
+    db = get_db()
+    db.execute( """ INSERT INTO task (author_id, tarefa, dia) VALUES (?, ?, ?) """,
+    (g.user["id"],request.form["afazer"],request.form["dia"])
+    )
+    db.commit()
+    return redirect(url_for("planner.index"))
 
-@bp.route("/edit/<int:index>", methods=["GET", "POST"])
+@bp.route("/edit/<int:index>", methods=("GET", "POST"))
+@login_required
 def edit(index):
-    afazer = afazeres[index]
+    db = get_db()
+    afazer = db.execute("""SELECT *FROM task WHERE id = ? AND author_id = ? """,
+        (index, g.user["id"])
+    ).fetchone()
+    if afazer is None:
+        abort(404)
     if request.method == "POST":
-        afazer['tarefa'] = request.form["afazer"]
-        return redirect(url_for("index"))
-    else:
-        return render_template("planner/edit.html", afazer=afazer, index=index)
+        db.execute(""" UPDATE task SET tarefa = ?, dia = ? WHERE id = ? AND author_id = ? """,
+            (request.form["afazer"],request.form["dia"],index,g.user["id"])
+        )
+        db.commit()
+        return redirect(url_for("planner.index"))
+    
+    return render_template("planner/edit.html",afazer=afazer,index=index)
 
-@bp.route("/check/<int:index>")  
+@bp.route("/check/<int:index>")
+@login_required
 def check(index):
-    afazeres[index]['finalizado'] = not afazeres[index]['finalizado']
-    return redirect(url_for("index"))
+    db = get_db()
+    db.execute(""" UPDATE task SET finalizado = ? WHERE id = ? AND author_id = ? """,
+    (1, index,g.user["id"])
+    )
+    db.commit()
+    return redirect(url_for("planner.index"))
 
 @bp.route("/delete/<int:index>")
+@login_required
 def delete(index):
-    del afazeres[index]
-    return redirect(url_for("index"))
+    db = get_db()
+    db.execute("""DELETE FROM task WHERE id = ? AND author_id = ? """,
+    (index, g.user["id"])
+    )
+    db.commit()
+    return redirect(url_for("planner.index"))

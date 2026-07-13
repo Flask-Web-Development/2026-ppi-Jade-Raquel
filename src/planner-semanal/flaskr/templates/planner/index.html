@@ -1,24 +1,44 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-    <head>
-        <meta charset = "UTF-8">
-        <title>Planner semanal</title>
-    </head>
-    <body>
-        <h1>Afazeres</h1>
-        <ul>
-            {% for afazer in afazeres %}
-            <li>
-                <input type="checkbox" name="finalizado" {% if afazer['finalizado'] %} checked {%endif%} onchange="this.form.submit()">
-                <span {%if afazer['finalizado'] %} style="text-decoration: line-through" {%endif%}>{{ afazer['tarefa'] }}</span>
-                <a href="{{ url_for('planner.edit', index=loop.index0)}}">Editar</a>
-                <a href="{{ url_for('planner.delete', index=loop.index0)}}">Deletar</a>
-            </li>
-            {% endfor %}
-        </ul>
-        <form action="{{ url_for('planner.add') }}" method="post">
-            <input type="text" name="afazer">
-            <button type="submit">Novo afazer</button>
-        </form>
-    </body>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Planner semanal</title>
+</head>
+
+<body>
+    <h1>Planner Semanal</h1>
+    {% set dias = ['domingo','segunda','terca','quarta','quinta','sexta','sabado'] %}
+    <div class="planner">
+        {% for dia in dias %}
+        <div class="coluna">
+            <h2>{{ dia.capitalize() }}</h2>
+
+            <ul>
+                {% for i in range(afazeres|length) %}
+                {% set afazer = afazeres[i] %}
+                {% if afazer["dia"] == dia %}
+                <li>
+                    <input type="checkbox" {% if afazer["finalizado"] %}checked{% endif %}>
+                    {{ afazer["tarefa"] }}
+                    <br>
+                    <a href="{{ url_for('planner.edit', index=afazer['id']) }}">Editar</a>
+                    <a href="{{ url_for('planner.delete', index=afazer['id']) }}">Deletar</a>
+                </li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+
+            <form action="{{ url_for('planner.add') }}" method="post">
+                <input type="hidden" name="dia" value="{{ dia }}">
+                <input type="text" name="afazer" placeholder="Nova tarefa">
+                <button type="submit">+</button>
+            </form>
+
+        </div>
+        {% endfor %}
+    </div>
+</body>
+
 </html>

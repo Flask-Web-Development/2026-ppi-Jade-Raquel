@@ -1,13 +1,26 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-    <head>
-        <meta charset = "UTF-8">
-        <title>Planner semanal - edição de tarefa</title>
-    </head>
-    <body>
-        <form action="{{ url_for('planner.edit', index=index)}}" method="post">
-            <input type="text" name="afazer" value="{{ afazer['tarefa']}}">
-            <button type="submit">Salvar</button>
-        </form>
-    </body>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Planner semanal - edição de tarefa</title>
+</head>
+
+<body>
+    <form action="{{ url_for('planner.edit', index=index) }}" method="post">
+        <input type="text" name="afazer" value="{{ afazer['tarefa'] }}">
+        <select name="dia">
+            <option value="domingo" {% if afazer['dia']=="domingo" %}selected{% endif %}>Domingo</option>
+            <option value="segunda" {% if afazer['dia']=="segunda" %}selected{% endif %}>Segunda</option>
+            <option value="terca" {% if afazer['dia']=="terca" %}selected{% endif %}>Terça</option>
+            <option value="quarta" {% if afazer['dia']=="quarta" %}selected{% endif %}>Quarta</option>
+            <option value="quinta" {% if afazer['dia']=="quinta" %}selected{% endif %}>Quinta</option>
+            <option value="sexta" {% if afazer['dia']=="sexta" %}selected{% endif %}>Sexta</option>
+            <option value="sabado" {% if afazer['dia']=="sabado" %}selected{% endif %}>Sábado</option>
+        </select>
+        <button type="submit">Salvar</button>
+    </form>
+</body>
+
 </html>
