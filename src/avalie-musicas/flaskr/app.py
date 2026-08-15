@@ -10,7 +10,7 @@ db.init_app(app)
 from models import Musica
 
 @app.route("/", methods=["GET", "POST"])
-def adicionar_livro():
+def adicionar_musica():
 
     if request.method == "POST":
 
