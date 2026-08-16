@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Minhas músicas</title>
+</head>
+
+<body>
+{% for musica in musicas %}
+
+    <article>
+        <h2>{{ musica.titulo }}</h2>
+        <p>Artista: {{ musica.autor }}</p>
+        <p>Nota: {{ musica.nota }}</p>
+        <p>{{ musica.avaliacao }}</p>
+        
+        <form method="GET" action="{{ url_for('editar_musica', id=musica.id) }}">
+        <button type="submit">
+            Editar
+        </button>
+        </form>
+
+        <form
+            method="POST"
+            action="{{ url_for('deletar_musica', id=musica.id) }}"
+        >
+            <button type="submit">
+                Deletar
+            </button>
+        </form>
+
+    </article>
+{% endfor %}
+    <form method="GET" action="{{ url_for('adicionar_musica') }}">
+        <button type="submit">
+            Adicionar nova música
+        </button>
+    </form>
+</body>
+</html>

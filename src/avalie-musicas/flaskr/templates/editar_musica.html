@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editar música</title>
+</head>
+
+<body>
+
+    <h1>Editar música</h1>
+
+    <form method="POST">
+        <label for="titulo">
+            Título:
+        </label>
+        <input
+            type="text" id="titulo" name="titulo" value="{{ musica.titulo }}" >
+        <br><br>
+
+        <label for="autor">
+            Artista:
+        </label>
+        <input
+            type="text" id="autor" name="autor" value="{{ musica.autor }}">
+        <br><br>
+
+        <label for="nota">
+            Nota:
+        </label>
+        <input
+            type="number" id="nota" name="nota" step="0.1"  value="{{ musica.nota }}" >
+        <br><br>
+
+        <label for="avaliacao">
+            Avaliação:
+        </label>
+        <textarea id="avaliacao" name="avaliacao">{{ musica.avaliacao }}</textarea>
+        <br><br>
+
+        <button type="submit">
+            Salvar alterações
+        </button>
+
+    </form>
+    <a href="{{ url_for('musicas') }}"> Voltar</a>
+
+</body>
+</html>
