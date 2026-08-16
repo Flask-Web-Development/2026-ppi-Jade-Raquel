@@ -6,8 +6,11 @@ Site voltado para a avaliação de músicas
 - Editar posts
 ## Como executar
 1. Acesse a pasta do projeto pelo terminal
+```bash
 cd src/avalie-musicas
+```
 2. Inicialize o ambiente virtual
+
 *Linux*
 ```bash
 python3 -m venv .venv
@@ -17,6 +20,7 @@ python3 -m venv .venv
 py -3 -m venv .venv
 ```
 3. Ative o ambiente virtual
+
 *Linux*
 ```bash
 source .venv/Scripts/activate

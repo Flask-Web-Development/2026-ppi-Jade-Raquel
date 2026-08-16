@@ -1,4 +1,4 @@
-# prog-web-flask-JadeRaquel
+# Projetos para Programação para internet - Jade
 Esse é um repositório dedicado para os projetos desenvolvidos para a matéria de Programação para internet(PPI)
 Professor: Daniel Aguiar
 
